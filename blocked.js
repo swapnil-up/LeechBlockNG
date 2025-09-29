@@ -61,6 +61,21 @@ function processBlockInfo(info) {
 		document.title += " (" + blockedSet.innerText + ")";
 	}
 
+	// button to create a fresh timer
+	let startAccessButton = document.getElementById("lbStartAccessButton");
+	if (startAccessButton) {
+		startAccessButton.disabled = true;
+		startAccessButton.addEventListener("click", () => {
+			console.log("Start Access button clicked!", gBlockedURL, gBlockedSet);
+			let message = {
+				type: "startAccess",
+				blockedURL: gBlockedURL,
+				blockedSet: gBlockedSet
+			};
+			browser.runtime.sendMessage(message);
+		});
+	}
+
 	let keywordMatched = document.getElementById("lbKeywordMatched");
 	let keywordMatch = document.getElementById("lbKeywordMatch");
 	if (keywordMatched && keywordMatch) {
@@ -142,6 +157,11 @@ function onCountdownTimer(countdown) {
 		// Clear countdown timer
 		window.clearInterval(countdown.interval);
 
+		// Allow access to the start now button
+		let startAccessButton = document.getElementById("lbStartAccessButton");
+		if (startAccessButton) {
+			startAccessButton.disabled = false;
+		}
 		// Notify extension that delay countdown has completed
 		let message = {
 			type: "delayed",

@@ -1668,6 +1668,14 @@ function handleMessage(message, sender, sendResponse) {
 					gOptions[`delayAutoLoad${message.blockedSet}`]);
 			break;
 
+		case "startAccess":
+			// Delaying page countdown that starts the whole fresh block
+			allowBlockedPage(sender.tab.id,
+					message.blockedURL,
+					message.blockedSet,
+					true);
+			break;
+
 		case "discard-time":
 			// Discard remaining time
 			discardRemainingTime();
